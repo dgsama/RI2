@@ -1,0 +1,4 @@
+#	MECHANIC
+SQL_ADD_MECHANIC = insert into TMecanicos(nombre, apellidos) values (?, ?)
+SQL_DELETE_MECHANIC = delete from TMecanicos where id = ?
+SQL_UPDATE_MECHANIC = update TMecanicos " + "set nombre = ?, apellidos = ? where id = ?
