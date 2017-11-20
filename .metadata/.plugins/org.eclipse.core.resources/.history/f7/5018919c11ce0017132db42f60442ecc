@@ -1,0 +1,27 @@
+package uo.ri.conf;
+
+import uo.ri.persistence.MecanicosGateway;
+import uo.ri.persistence.impl.MecanicosGatewayImpl;
+
+public class PersistenceFactory {
+	
+	public PersistenceFactory() {
+		}
+	
+	public MecanicosGateway getAveriasGateway() {
+		return new MecanicosGatewayImpl();
+	}
+	public MecanicosGateway getCargosGateway() {
+		return new MecanicosGatewayImpl();
+	}
+	public MecanicosGateway getFacturasGateway() {
+		return new MecanicosGatewayImpl();
+	}
+	public MecanicosGateway getMecanicosGateway() {
+		return new MecanicosGatewayImpl();
+	}
+	public MecanicosGateway getMedioPagoGateway() {
+		return new MecanicosGatewayImpl();
+	}
+
+}

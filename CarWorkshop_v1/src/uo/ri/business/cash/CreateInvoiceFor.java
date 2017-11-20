@@ -95,7 +95,6 @@ public class CreateInvoiceFor {
 		return factura;
 	}
 
-	@SuppressWarnings("resource")
 	private void verificarAveriasTerminadas(List<Long> idsAveria) throws SQLException, BusinessException {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
