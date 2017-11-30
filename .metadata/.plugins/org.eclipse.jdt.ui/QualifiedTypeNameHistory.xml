@@ -10,8 +10,16 @@
 <fullyQualifiedTypeName name="uo.ri.persistence.impl.AveriasGatewayImpl"/>
 <fullyQualifiedTypeName name="uo.ri.persistence.CargosGateway"/>
 <fullyQualifiedTypeName name="uo.ri.persistence.impl.CargosGatewayImpl"/>
-<fullyQualifiedTypeName name="uo.ri.persistence.FacturasGateway"/>
 <fullyQualifiedTypeName name="uo.ri.persistence.impl.FacturasGatewayImpl"/>
 <fullyQualifiedTypeName name="uo.ri.persistence.MediosPagoGateway"/>
 <fullyQualifiedTypeName name="uo.ri.persistence.impl.MedioPagoGatewayImpl"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.FacturasGateway"/>
+<fullyQualifiedTypeName name="uo.ri.conf.PersistenceFactory"/>
 </qualifiedTypeNameHistroy>

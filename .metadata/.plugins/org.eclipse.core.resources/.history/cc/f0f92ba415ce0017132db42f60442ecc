@@ -1,8 +1,0 @@
-#	ADMIN
-SQL_INSERT_MECHANIC = insert into TMecanicos(nombre, apellidos) values (?, ?)
-SQL_DELETE_MECHANIC = delete from TMecanicos where id = ?
-SQL_UPDATE_MECHANIC = update TMecanicos " + "set nombre = ?, apellidos = ? where id = ?
-SQL_FIND_ALL_MECHANIC = select id, nombre, apellidos from TMecanicos
-
-#	CASH
-SQL_IMPORTE_REPUESTOS = "select sum(s.cantidad * r.precio) from  TSustituciones s, TRepuestos r where s.repuesto_id = r.id and s.intervencion_averia_id = ?";

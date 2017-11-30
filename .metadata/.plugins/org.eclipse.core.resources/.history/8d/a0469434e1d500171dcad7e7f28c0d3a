@@ -51,7 +51,7 @@ public class MecanicosGatewayImpl implements MecanicosGateway {
 	public void addMechanic(String name, String surname) throws SQLException {
 		PreparedStatement pst = null;
 		try {
-			pst = c.prepareStatement(Conf.get("SQL_INSERT_MECHANIC"));
+			pst = c.prepareStatement(Conf.get("SQLinsertMecanico"));
 			pst.setString(1, name);
 			pst.setString(2, surname);
 			pst.executeUpdate();
@@ -65,7 +65,7 @@ public class MecanicosGatewayImpl implements MecanicosGateway {
 	public void deleteMechanic(Long id) throws SQLException {
 		PreparedStatement pst = null;
 		try {
-			pst = c.prepareStatement(Conf.get("SQL_DELETE_MECHANIC"));
+			pst = c.prepareStatement(Conf.get("SQLdeleteMecanico"));
 			pst.setLong(1, id);
 			pst.executeUpdate();
 		} catch (SQLException e) {
@@ -78,7 +78,7 @@ public class MecanicosGatewayImpl implements MecanicosGateway {
 	public void update(Long id, String name, String surname) throws SQLException {
 		PreparedStatement pst = null;
 		try {
-			pst = c.prepareStatement(Conf.get("SQL_UPDATE_MECHANIC"));
+			pst = c.prepareStatement(Conf.get("SQLupdateMecanicos"));
 			pst.setString(1, name);
 			pst.setString(2, surname);
 			pst.setLong(3, id);

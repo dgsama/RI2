@@ -1,8 +1,0 @@
-package uo.ri.conf;
-
-public class ServicesFactory {
-
-	public ServicesFactory() {
-	}
-
-}
