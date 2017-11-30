@@ -1,0 +1,164 @@
+package uo.ri.business.impl.cash;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import alb.util.date.DateUtil;
+import alb.util.jdbc.Jdbc;
+import alb.util.math.Round;
+import uo.ri.business.common.BusinessException;
+import uo.ri.conf.PersistenceFactory;
+import uo.ri.persistence.AveriasGateway;
+import uo.ri.persistence.FacturasGateway;
+
+public class CreateInvoiceFor {
+
+
+	private Connection connection;
+	List<Long> idsAveria;
+	private FacturasGateway facturasGateway;
+	private AveriasGateway averiasGateway;
+
+	public CreateInvoiceFor(List<Long> idsAveria) {
+		super();
+		this.idsAveria = idsAveria;
+	}
+
+	public Map<String,Object> execute() throws BusinessException{
+
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		try {
+			
+			connection = Jdbc.getConnection();
+			connection.setAutoCommit(false);
+			
+			facturasGateway = PersistenceFactory.getFacturasGateway();
+			facturasGateway.setConnection(connection);
+			
+			averiasGateway = PersistenceFactory.getAveriasGateway();
+			averiasGateway.setConnection(connection);
+			
+			verificarAveriasTerminadas(idsAveria);
+			
+			Map<String, Object> datos = calcularDatosParaFactura(idsAveria);
+			
+			long idFactura = crearFactura(datos);
+			vincularAveriasConFactura(idFactura, idsAveria);
+			cambiarEstadoAverias(idsAveria, "FACTURADA");
+			
+			map.put("numeroFactura",  datos.get("numeroFactura"));
+			map.put("fechaFactura", (Date) datos.get("fechaFactura"));
+			map.put("totalFactura", (Double) datos.get("totalFactura"));
+			map.put("iva", (Double) datos.get("iva"));
+			map.put("importe", (Double) datos.get("importe"));
+			
+			connection.commit();
+		}
+		catch (SQLException e) {
+			try { connection.rollback(); } catch (SQLException ex) {};
+			throw new RuntimeException(e);
+		}
+		catch (BusinessException e) {
+			try { connection.rollback(); } catch (SQLException ex) {};
+			throw e;
+		}
+		finally {
+			Jdbc.close(connection);
+		}
+		
+		return map;
+	}
+
+
+	public Map<String,Object> calcularDatosParaFactura(List<Long> idsAveria) throws BusinessException, SQLException{
+		Map<String, Object> datos = new HashMap<String, Object>();
+		
+		long numeroFactura = generarNuevoNumeroFactura();
+		Date fechaFactura = DateUtil.today();
+		double totalFactura = calcularImportesAverias(idsAveria);
+		double iva = porcentajeIva(totalFactura, fechaFactura);
+		double importe = totalFactura * (1 + iva/100);
+		importe = Round.twoCents(importe);
+		
+		datos.put("numeroFactura", numeroFactura);
+		datos.put("fechaFactura", fechaFactura);
+		datos.put("totalFactura", totalFactura);
+		datos.put("iva", iva);
+		datos.put("importe", importe);
+		
+		return datos;
+	}
+	
+	private void verificarAveriasTerminadas(List<Long> idsAveria) throws SQLException, BusinessException {
+		averiasGateway.verificarAveriasTermindas(idsAveria);
+	}
+	
+	private void cambiarEstadoAverias(List<Long> idsAveria, String status) throws SQLException {
+		Map<String, Object> averias = new HashMap<String, Object>();
+		averias.put("idsAveria", idsAveria);
+		averias.put("status", status);
+		averiasGateway.updateEstadoAveria(averias);
+	}	
+
+	private void vincularAveriasConFactura(long idFactura, List<Long> idsAveria) throws SQLException {
+		Map<String, Object> datos = new HashMap<String, Object>();
+		datos.put("idFactura", idFactura);
+		datos.put("idsAveria", idsAveria);
+		averiasGateway.vincularFacturaAveria(datos);
+	}
+
+	private long crearFactura(Map<String, Object> datos) throws SQLException {
+		return getGeneratedKey(facturasGateway.save(datos));
+	}
+
+	private long getGeneratedKey(long numeroFactura) throws SQLException {
+		return (long) facturasGateway.findByNumber(numeroFactura).get("idFactura");
+	}
+
+	private Long generarNuevoNumeroFactura() throws SQLException {
+		return facturasGateway.getLastInvoiceNumber() +1;
+	}
+
+	private double porcentajeIva(double totalFactura, Date fechaFactura) {
+		return DateUtil.fromString("1/7/2012").before(fechaFactura) ? 21.0 : 18.0;
+	}
+
+	protected double calcularImportesAverias(List<Long> idsAveria)
+			throws BusinessException, SQLException {
+		
+		double totalFactura = 0.0;
+		for(Long idAveria : idsAveria) {
+			double importeManoObra = consultaImporteManoObra(idAveria);
+			double importeRepuestos = consultaImporteRepuestos(idAveria);
+			double totalAveria = importeManoObra + importeRepuestos;
+			
+			actualizarImporteAveria(idAveria, totalAveria);
+			
+			totalFactura += totalAveria; 
+		}
+		return totalFactura;
+	}
+
+	private void actualizarImporteAveria(Long idAveria, double totalAveria) throws SQLException {
+		Map<String, Object> averia = new HashMap<String, Object>();
+		averia.put("idAveria", idAveria);
+		averia.put("totalAveria", totalAveria);
+		averiasGateway.updateImporte(averia);
+	}
+
+	private double consultaImporteRepuestos(Long idAveria) throws SQLException {
+		return averiasGateway.importeRepuestos(idAveria);
+	}
+
+	private double consultaImporteManoObra(Long idAveria) throws BusinessException, SQLException {
+		return averiasGateway.importeManoObra(idAveria);
+	}
+
+}

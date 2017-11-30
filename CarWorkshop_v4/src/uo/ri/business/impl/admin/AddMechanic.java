@@ -1,15 +1,13 @@
 package uo.ri.business.impl.admin;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import alb.util.jdbc.Jdbc;
+import uo.ri.conf.PersistenceFactory;
+import uo.ri.persistence.MecanicosGateway;
 
 public class AddMechanic {
-
-	private static String SQL = "insert into TMecanicos(nombre, apellidos) values (?, ?)";
 
 	private String nombre, apellidos;
 
@@ -23,22 +21,20 @@ public class AddMechanic {
 
 		// Procesar
 		Connection c = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
 
 		try {
 			c = Jdbc.getConnection();
 
-			pst = c.prepareStatement(SQL);
-			pst.setString(1, nombre);
-			pst.setString(2, apellidos);
-
-			pst.executeUpdate();
+			c.setAutoCommit(false);
+			MecanicosGateway mg = PersistenceFactory.getMecanicosGateway();
+			mg.setConnection(c);
+			mg.addMechanic(nombre, apellidos);
+			c.commit();
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rs, pst, c);
+			Jdbc.close( c);
 		}
 	}
 

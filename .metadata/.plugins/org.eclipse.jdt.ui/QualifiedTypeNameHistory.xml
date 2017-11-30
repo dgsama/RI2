@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="uo.ri.business.AdminService"/>
+<fullyQualifiedTypeName name="uo.ri.business.impl.AdminServiceImpl"/>
+<fullyQualifiedTypeName name="uo.ri.business.impl.CashServiceImpl"/>
+<fullyQualifiedTypeName name="uo.ri.conf.ServicesFactory"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.MecanicosGateway"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.impl.MecanicosGatewayImpl"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.AveriasGateway"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.impl.AveriasGatewayImpl"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.CargosGateway"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.impl.CargosGatewayImpl"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.FacturasGateway"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.impl.FacturasGatewayImpl"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.MediosPagoGateway"/>
+<fullyQualifiedTypeName name="uo.ri.persistence.impl.MedioPagoGatewayImpl"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,14 @@
+package uo.ri.persistence;
+
+public interface FacturasGateway {
+	
+	void setConnection(Connection connection);
+	long save(Map<String, Object> datos) throws SQLException;
+	Map<String, Object> findByNumber(long numeroFactura) throws SQLException;
+	Long getLastInvoiceNumber() throws SQLException;
+	Map<String, Object> findById(Long id);
+	List<Map<String, Object>> findAll();
+	void delete(Long id);
+	void update(Map<String, Object> factura);
+
+}

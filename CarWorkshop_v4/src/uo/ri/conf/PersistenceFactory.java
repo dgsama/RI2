@@ -16,23 +16,23 @@ public class PersistenceFactory {
 	public PersistenceFactory() {
 	}
 
-	public AveriasGateway getAveriasGateway() {
+	public static AveriasGateway getAveriasGateway() {
 		return new AveriasGatewayImpl();
 	}
 
-	public CargosGateway getCargosGateway() {
+	public static CargosGateway getCargosGateway() {
 		return new CargosGatewayImpl();
 	}
 
-	public FacturasGateway getFacturasGateway() {
+	public static FacturasGateway getFacturasGateway() {
 		return new FacturasGatewayImpl();
 	}
 
-	public MecanicosGateway getMecanicosGateway() {
+	public static MecanicosGateway getMecanicosGateway() {
 		return new MecanicosGatewayImpl();
 	}
 
-	public MediosPagoGateway getMedioPagoGateway() {
+	public static MediosPagoGateway getMedioPagoGateway() {
 		return new MedioPagoGatewayImpl();
 	}
 
